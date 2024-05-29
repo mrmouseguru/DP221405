@@ -6,8 +6,11 @@ public class AssoApp {
 
         B bRemote = new B();
 
-        A aRemote = new A(bRemote);
+       // A aRemote = new A(bRemote);
         //main() message to A
+        A aRemote = new A();
+        aRemote.setBRemote(bRemote);
+
         aRemote.print();
         
     }

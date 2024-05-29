@@ -11,9 +11,15 @@ public class A {
         this.bRemote = bRemote;
     }
 
+    A(){}
+
     //method
     public void print() {
         bRemote.printName();//A message to B
+    }
+
+    public void setBRemote(B bRemote) {
+        this.bRemote = bRemote;
     }
 
 }
