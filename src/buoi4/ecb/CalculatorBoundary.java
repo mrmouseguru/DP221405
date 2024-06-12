@@ -31,7 +31,7 @@ public class CalculatorBoundary extends JFrame
         return jLabelOutputRemote;
     }
     CalculatorBoundary() {
-        calculatorControlRemote = new CalculatorControl(this);
+        calculatorControlRemote = new CalculatorControl();
         buildPanel();
 
         setSize(400, 400);
@@ -67,6 +67,36 @@ public class CalculatorBoundary extends JFrame
 
     }
 
-   
+    class CalculatorControl implements ActionListener{
+        //private CalculatorBoundary calculatorBoundaryRemote = null;
+        private CalculatorEntity calculatorEntityRemote = null;
+    
+        CalculatorControl(){
+            calculatorEntityRemote = new CalculatorEntity();
+            //this.calculatorBoundaryRemote = calculatorBoundaryRemote;
+        }
+    
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            double num1 = Double.parseDouble(
+            jTextFieldInputRemote1.getText());
+            double num2 = Double.parseDouble(jTextFieldInputRemote2.getText());
+            String command = e.getActionCommand();
+            // lấy data từ input1
+            if (command.equals("ADD")) {
+                calculatorEntityRemote.add(num1, num2);
+                double sum = calculatorEntityRemote.getResult();
+                jLabelOutputRemote.setText("" + sum);
+            }else if(command.equals("SUB")){
+                calculatorEntityRemote.sub(num1, num2);
+                double sum = calculatorEntityRemote.getResult();
+                jLabelOutputRemote.setText("" + sum);
+    
+            }
+    
+        }
+    
+        
+    } 
 
 }
