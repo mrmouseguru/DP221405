@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -21,18 +24,25 @@ public class CalculatorView extends JFrame implements Subcriber
             jLabelInputRemote2, jLabelOutputRemote;
     private JTextField jTextFieldInputRemote1,
             jTextFieldInputRemote2;
+    private JMenuBar menuBarRemote = null;
     private JButton addButon, suButton, mulButton, divButton;
     private CalculatorController calculatorControlRemote = null;
     private CalculatorModel calculatorModelRemote = null;
+    private MenuController menuControllerRemote = null;
     CalculatorView() {
         calculatorModelRemote = new CalculatorModel();
         //dăng ký subcriber - View với MOdel là Publisher
         calculatorModelRemote.subcribe(this);
         calculatorControlRemote = new CalculatorController();
+        menuControllerRemote = new MenuController();
+        buildMenu();
         buildPanel();
 
         setSize(400, 400);
+        setTitle("Frame Viewer");
+        setJMenuBar(menuBarRemote);
         setVisible(true);
+        
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -64,6 +74,18 @@ public class CalculatorView extends JFrame implements Subcriber
 
     }
 
+    public void buildMenu() {
+        menuBarRemote = new JMenuBar();
+        JMenu calMenuRemote = new JMenu("Calculator");
+        menuBarRemote.add(calMenuRemote);
+        JMenuItem addMenuItemRemote = new JMenuItem("ADD");
+        addMenuItemRemote.addActionListener(menuControllerRemote);
+        calMenuRemote.add(addMenuItemRemote);
+        JMenuItem subMenuItemRemote = new JMenuItem("SUB");
+        subMenuItemRemote.addActionListener(menuControllerRemote);
+        calMenuRemote.add(subMenuItemRemote);
+        
+    }
     class CalculatorController implements ActionListener{
         CalculatorController(){
         }
@@ -86,6 +108,27 @@ public class CalculatorView extends JFrame implements Subcriber
         
     }
 
+    /**
+     * InnerCalculatorView
+     */
+    class MenuController implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            double num1 = Double.parseDouble(
+            jTextFieldInputRemote1.getText());
+            double num2 = Double.parseDouble(jTextFieldInputRemote2.getText());
+            String command = e.getActionCommand();
+            // lấy data từ input1
+            if (command.equals("ADD")) {
+                calculatorModelRemote.add(num1, num2);
+            }else if(command.equals("SUB")){
+                calculatorModelRemote.sub(num1, num2);
+            }
+        }
+    
+        
+    }
     @Override
     public void update() {
         double result = calculatorModelRemote.getResult();
